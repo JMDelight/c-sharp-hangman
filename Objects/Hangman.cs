@@ -9,6 +9,8 @@ namespace Hangman.Objects
     private int _turnCount;
     private static List<string> _wordsList = new List<string> () {"apple", "bear", "cheetah"};
     private List<string> _lettersGuessed;
+    private List<string> _wordToDisplay;
+    private static Game _currentGame;
 
     public Game()
     {
@@ -17,6 +19,11 @@ namespace Hangman.Objects
       _gameWord = _wordsList[chosenWord];
       _turnCount = 0;
       _lettersGuessed = new List<string> {"a"};
+      _wordToDisplay = new List<string> {};
+      for(int index = 0; index < _gameWord.Length; index ++)
+      {
+        _wordToDisplay.Add("_ ");
+      }
     }
 
     public string GetGameWord()
@@ -31,6 +38,23 @@ namespace Hangman.Objects
     {
       _turnCount = newCount;
     }
+    public static Game GetCurrentGame()
+    {
+      return _currentGame;
+    }
+    public static void SetCurrentGame(Game newGame)
+    {
+      _currentGame = newGame;
+    }
+    public string GetWordToDisplayString()
+    {
+      string _wordToDisplayString = "";
+      foreach (string letter in _wordToDisplay)
+      {
+        _wordToDisplayString += letter;
+      }
+      return _wordToDisplayString;
+    }
     public string GetLettersGuessedString()
     {
       string _lettersGuessedString = "";
@@ -40,13 +64,32 @@ namespace Hangman.Objects
       }
       return _lettersGuessedString;
     }
-    // public void GuessLetter(string letter)
-    // {
-    //
-    //   if (_gameWord.Contains(letter))
-    //   {
-    //
-    //   }
-    // }
+    public void GuessLetter(string letter)
+    {
+      if (_lettersGuessed.Contains(letter))
+      {
+        // "You already guessed that letter";
+      }
+      else
+      {
+        _lettersGuessed.Add(letter);
+
+        if (_gameWord.Contains(letter))
+        {
+          for(int index = 0; index < _gameWord.Length; index ++)
+          {
+            string charOfGameWord = _gameWord[index].ToString();
+            if (charOfGameWord == letter)
+            {
+              _wordToDisplay[index] = letter;
+            }
+          }
+        }
+        else
+        {
+          _turnCount ++;
+        }
+      }
+    }
   }
 }
