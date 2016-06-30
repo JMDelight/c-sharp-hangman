@@ -10,7 +10,9 @@ namespace Hangman.Objects
     private static List<string> _wordsList = new List<string> () {"apple", "bear", "cheetah"};
     private List<string> _lettersGuessed;
     private List<string> _wordToDisplay;
+    private string _imageName;
     private static Game _currentGame;
+    private string _messageString;
 
     public Game()
     {
@@ -18,7 +20,8 @@ namespace Hangman.Objects
       int chosenWord = randomWord.Next(0, _wordsList.Count);
       _gameWord = _wordsList[chosenWord];
       _turnCount = 0;
-      _lettersGuessed = new List<string> {"a"};
+      _imageName = "hang-man-0.png";
+      _lettersGuessed = new List<string> {};
       _wordToDisplay = new List<string> {};
       for(int index = 0; index < _gameWord.Length; index ++)
       {
@@ -46,6 +49,18 @@ namespace Hangman.Objects
     {
       _currentGame = newGame;
     }
+    public string GetMessageString()
+    {
+      return _messageString;
+    }
+    public string GetImageName()
+    {
+      return _imageName;
+    }
+    public void SetImageName()
+    {
+      _imageName = "hang-man-" + _turnCount.ToString() + ".png";
+    }
     public string GetWordToDisplayString()
     {
       string _wordToDisplayString = "";
@@ -64,30 +79,47 @@ namespace Hangman.Objects
       }
       return _lettersGuessedString;
     }
+
     public void GuessLetter(string letter)
     {
-      if (_lettersGuessed.Contains(letter))
+      if (_messageString == "You win!" || _messageString == "You Lose" || _messageString == "The game is over, please start a new game.")
       {
-        // "You already guessed that letter";
+        _messageString = "The game is over, please start a new game.";
       }
-      else
-      {
-        _lettersGuessed.Add(letter);
-
-        if (_gameWord.Contains(letter))
+      else {
+        _messageString = "";
+        if (_lettersGuessed.Contains(letter))
         {
-          for(int index = 0; index < _gameWord.Length; index ++)
-          {
-            string charOfGameWord = _gameWord[index].ToString();
-            if (charOfGameWord == letter)
-            {
-              _wordToDisplay[index] = letter;
-            }
-          }
+          _messageString = "You already guessed that letter";
         }
         else
         {
-          _turnCount ++;
+          _lettersGuessed.Add(letter);
+
+          if (_gameWord.Contains(letter))
+          {
+            for(int index = 0; index < _gameWord.Length; index ++)
+            {
+              string charOfGameWord = _gameWord[index].ToString();
+              if (charOfGameWord == letter)
+              {
+                _wordToDisplay[index] = letter;
+              }
+            }
+          }
+          else
+          {
+            _turnCount ++;
+            SetImageName();
+            if (_turnCount >= 9)
+            {
+              _messageString = "You Lose";
+            }
+          }
+          if (!_wordToDisplay.Contains("_ "))
+          {
+            _messageString = "You win!";
+          }
         }
       }
     }

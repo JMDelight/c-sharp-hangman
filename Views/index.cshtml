@@ -1,5 +1,6 @@
-<h1 class="page-header">Welcome to the Hangman Game!</h1>
-<h2>You have guessed @Model.GetTurnCount() times...</h2>
+<h1>Welcome to the Hangman Game!</h1>
+<h2>You have missed @Model.GetTurnCount() guesses...</h2>
+<img src="Content/img/@Model.GetImageName()" alt="a picture representing the state of the hangman game." />
 <!-- <p>@Model.GetGameWord()</p> -->
 <h2>@Model.GetWordToDisplayString()</h2>
 <h2>Letters guessed</h2>
@@ -8,3 +9,4 @@
   <p>Guess a Letter!<input type="text" class="form-control"name="letter-guess" id="letter-guess" required="true" pattern="[a-z]" title="must contain only one lowercase letter" autofocus></p>
   <button type="submit" class="btn btn-success" name="guess-btn">Guess!</button>
 </form>
+<h1>@Model.GetMessageString()</h1>
