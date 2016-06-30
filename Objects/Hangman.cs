@@ -7,7 +7,7 @@ namespace Hangman.Objects
   {
     private string _gameWord;
     private int _turnCount;
-    private static List<string> _wordsList = new List<string> () {"apple", "bear", "cheetah"};
+    private static List<string> _wordsList = new List<string> () {"anteater", "bear", "cheetah", "giraffe", "tiger", "whale", "beetle"};
     private List<string> _lettersGuessed;
     private List<string> _wordToDisplay;
     private string _imageName;
@@ -86,7 +86,8 @@ namespace Hangman.Objects
       {
         _messageString = "The game is over, please start a new game.";
       }
-      else {
+      else
+      {
         _messageString = "";
         if (_lettersGuessed.Contains(letter))
         {
@@ -95,7 +96,7 @@ namespace Hangman.Objects
         else
         {
           _lettersGuessed.Add(letter);
-
+          _lettersGuessed.Sort();
           if (_gameWord.Contains(letter))
           {
             for(int index = 0; index < _gameWord.Length; index ++)
